@@ -1,0 +1,108 @@
+---
+title: "Ranked Choice Voting"
+author: "Brennan T. Beal, PharmD"
+output: 
+  html_document:
+      #theme: simplex
+      toc: TRUE
+      toc_depth: 4
+      toc_float: TRUE
+      includes:
+        before_body: header.html
+        after_body: footer.html
+---
+
+
+```{r setup, message=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+library(kableExtra)
+library(shiny)
+library(shinyWidgets)
+library(shinydashboard)
+library(formattable)
+library(ggthemes)
+library(tidyverse)
+library(fGarch)
+library(scales)
+library(DT)
+library(plotly)
+
+
+```
+
+
+Before we begin, if you are here for the actual interactive ranked choice voting (RCV) simulation, that is on the next tab. You can skip there if you'd like (just press the "Simulation" tab above - all the instructions can be found there). But I only made that simulation to demonstrate the idea of RCV. If you are unfamiliar with the concept, you should read on below! Hopefully you'll give it some consideration and maybe share with people that are unfamiliar. I truly believe our democracy will be better off for it.  
+
+### Election time, again...
+Well, it’s that time again. Every four years American citizens flock to the polls and fulfill our most central (and privileged) obligation – voting. Except, I’m not that excited. And I wasn’t that excited the last time. Now that I am really giving it some consideration, I don’t enjoy voting.  
+
+<span style="color:indianred">**Why is that?**</span>
+
+### How we vote
+A new phrase: <span style="color:indianred">**first-past-the-post**</span>.  
+
+In most elections (not necessarily federal government) we have what is commonly known as first-past-the-post (FPTP) voting. This is a form of plurality voting, which means a candidate doesn’t need the majority of votes (>50% of all voters), they just need more than all the others.
+\
+For example, if we look at the mock polls below, we can see that candidate "D" has the most votes but is nowhere near 50% (or more) of the population. This means two very important things:  
+  
+  1. At least 75% of the voting population *did not* vote for candidate "D"  
+  2. Candidate "D" will be the winner 
+\
+\
+\
+\
+  
+
+```{r, echo=FALSE, fig.cap="Polling Results From our Mock Poll", out.width = '85%', out.height= '85%', fig.align='center'}
+knitr::include_graphics("mockPoll.png")
+```
+
+### The Problem with FPTP
+The first and most obvious problem with candidate "D" being our winner is that it really doesn't reflect the <span style="color:indianred">**preferences**</span> of the voting population. It only tells us that ~25% of people prefer D over anyone else and ~75% of the voters do not. But what about who I would pick second? Or third? Or what about who I absolutely would not pick? Shouldn't these be accounted for? It really isn't hard to imagine a scenario where everyone that voted for candidates A, C, and E would have preferred candidate B before candidate D. If that were true, a slightly more accurate poll would look like this:
+\
+\
+\
+\
+
+
+```{r, echo=FALSE, fig.cap="Polling Results Updated", out.width = '85%', out.height= '85%', fig.align='center'}
+knitr::include_graphics("mockPoll2.png")
+```
+\
+\
+Which brings me to my second point: in this scenario, if everyone would have voted more *strategically*, they could have easily elected B. <span style="color:indianred">**The main difference in the outcome was voting strategy more than voter preference.**</span> Unfortunately, this is what people mean when they suggest that someone is "throwing away" their vote. They mean that their preferred candidate (candidate "E", maybe?) is polling the lowest and likely will not win. So, instead of actually voting for that person, the voter should place it where it is more likely to have an impact. This is also why candidates drop out so frequently. They don't want to "pull" votes another perhaps more viable candidate. 
+\
+\
+The final problem (actually, there are many but this is the last i'll touch on here): FPTP voting *necessarily* creates a polarized political landscape and has led to our two-party system. From experience, polarizing candidates tend to rile up sizable, non-representative-of-the-majority, crowds. The rhetoric of these candidates tend to focus more on belittling the other candidates than actually aaddressing policy issues because, after all, they only need plurality, not majority. So, sabotoging other candidates is a completely viable option. 
+\
+\
+Naturally, with one polarizing candidate, another will arise to combat them. Now, suppose, we have two candidates both polling around 25% (candidates "C" and "D" from above). In this scenario, because you know your favorite candidate will not win, you will vote for the lesser of two evils (in your mind).
+\
+\
+And this, friends, is why voting is no fun. Instead of going to the polls and voting for someone we feel passionate about, the majority of Americans must choose between two candidates that were not their first choice.
+\
+\
+There is a pretty simple solution, though.
+
+### Ranked Choice Voting
+The idea of ranked choice voting (RCV) has been around for over 100 years. Instead of voting for one's number one candidate, a voter is supposed to *rank* their candidate preferences. By doing this, a candidates preferences are clear and can be counted in an algorithmic manner. 
+\
+\
+RCV works by a runoff. So, if a candidates first choice is the *lowest* polling candidate, then their vote goes to their second choice... and so on until a candidate has majority of the votes (or some threshold). This solves all of our problems from above:
+\
+  1. Ranking votes allows us to directly assess voter preference.
+  2. No need to strategize - your vote will be counted in the order you specify. So, if you really don't like a particulaar candidate, you can simply vote them last. Your voice is heard.
+  3. Less negative ad campaigns and more positive, thoughtful campaigns (after all, now a candidate must appeal to *everyone*.
+\
+\
+If you want to see how this works in action, head over to my simulation page. 
+\
+\
+
+### Thank you for reading
+My goal of this post was for the reader to understand what the current issues behind our voting system are and a very simple solution to fix them: ranked choice voting. Now that you (hopefully) have a solid understanding of these issues go spread the word. But, as Paul Krugman recalls in his book, "Arguing with Zombies", it is difficult to get a man to understand something when his salary depends on him not understanding it.
+\
+\
+
+
