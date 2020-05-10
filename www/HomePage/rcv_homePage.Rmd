@@ -3,7 +3,7 @@ title: "Ranked Choice Voting"
 author: "Brennan T. Beal, PharmD"
 output: 
   html_document:
-      #theme: simplex
+      theme: simplex
       toc: TRUE
       toc_depth: 4
       toc_float: TRUE

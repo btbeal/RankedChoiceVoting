@@ -22,7 +22,7 @@ sim_function <- function(voter_number = voters(), distributions = dist()){
   preference.mat["B", ] <- c(0.30, 0.00, 0.59, 0.10, 0.01) # could make them all flexible... but that would be a lot
   preference.mat["C", ] <- c(0.38, 0.42, 0.00, 0.10, 0.10)
   preference.mat["D", ] <- c(0.08, 0.02, 0.05, 0.00, 0.85)
-  preference.mat["E", ] <- c(0.08, 0.02, 0.05, 0.55, 0.00)
+  preference.mat["E", ] <- c(0.15, 0.20, 0.20, 0.45, 0.00)
   
   candidate_df <- matrix(NA,                      # Creating null matrix of rank x voters; a voter first choice in column 1 and so on
                          nrow = n_voters,
@@ -63,6 +63,7 @@ sim_function <- function(voter_number = voters(), distributions = dist()){
   init_choices <- df[,1]    # to bind to df for visualization
   poll_check <- 0  # begin the simulation by creating a "poll check," which will see if any candidate has >= 50% polling
   cycle <- 1
+  pcheck_list <- list()
   while(all(poll_check < 0.5)){            # loop until someone has majority vote
     
     i <- 1
@@ -75,7 +76,7 @@ sim_function <- function(voter_number = voters(), distributions = dist()){
     }
     
     poll_check <- prop.table(table(vec))  # checking proportion of votes for each candidate
-    print(poll_check)                     # print to console
+    pcheck_list[[cycle]] <- poll_check
     
     # ---- Create ggplot of polling results and update each round
     dat <- data.frame(x = vec, initial = init_choices, cycle = cycle)           # create df from polling results
@@ -92,5 +93,49 @@ sim_function <- function(voter_number = voters(), distributions = dist()){
     df_full <- rbind(dat, df_full)
   }
   
-  return(df_full)
+  return(list(df_full, pcheck_list))
+  
+}
+
+
+
+plot_function <- function(data = plot_data(), vote = voters()){
+  
+  a <- list(  # creating annotation
+    x = 4,
+    y = (vote/2 + 1),
+    opacity = 0.7,
+    text = "Majority Line",
+    xref = "x",
+    yref = "y",
+    showarrow = TRUE,
+    arrowhead = 4,
+    ax = 20,
+    ay = -40
+  )
+  
+  p <- data %>% 
+    group_by(cycle, x) %>% 
+    mutate(y_var = 1:n()) %>% 
+    plot_ly(x = ~x,
+            y = ~y_var,
+            frame = ~cycle,
+            color = ~initial,
+            type = "scatter",
+            mode = "markers",
+            height = "1000")  %>% 
+    layout(annotations = a,
+           shapes=list(type='line', 
+                       x0="A", x1="E", 
+                       y0= (vote/2 + 1), y1= (vote/2 + 1), 
+                       line=list(dash='dot', width=1, color = "red")),
+           xaxis = list(title = "Candidate",
+                        type =  "category",
+                        categoryorder = "array",
+                        categoryarray = c("A", "B", "C", "D", "E")),
+           yaxis = list(title = "Total Votes",
+                        range = c(0, vote))) %>% 
+    animation_opts(2000, easing = "linear", redraw = FALSE)
+  
+  return(p)
 }
