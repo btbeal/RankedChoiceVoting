@@ -2,6 +2,7 @@ source("Components/InitialDistribution.R")
 source("aux.R")
 
 library(shiny)
+library(V8)
 library(shinyWidgets)
 library(shinythemes)
 library(shinyjs)

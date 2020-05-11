@@ -1,0 +1,12 @@
+name: RankedChoiceVoting
+title: RankedChoiceVoting
+username:
+account: brennanbeal
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2275781
+bundleId: 3129710
+url: https://brennanbeal.shinyapps.io/RankedChoiceVoting/
+when: 1589167941.3853
+asMultiple: FALSE
+asStatic: FALSE

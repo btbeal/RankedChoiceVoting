@@ -1,5 +1,5 @@
 source("Components/Sim_functions/simulationFunction.R")
-source("Components/simPrint/simulation_text.r")
+source("Components/simPrint/simulation_text.R")
 
 
 initialDistributionUI <- function(id){
@@ -9,7 +9,7 @@ initialDistributionUI <- function(id){
   fluidPage(
     chooseSliderSkin("Round"),
     setSliderColor(rep("#7412bd", 6), c(1,2,3,4,5,6)),
-    sidebarPanel(homePageUI,
+    sidebarPanel(simInstructions,
                  hr(),
                  actionBttn(inputId = ns("dist_action"),
                             label = "Press to update simulation",
