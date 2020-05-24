@@ -1,5 +1,5 @@
 source("Components/Sim_functions/simulationFunction.R")
-source("Components/simPrint/simulation_text.R")
+source("Components/Instructions/simInstructions.R")
 
 
 initialDistributionUI <- function(id){
@@ -20,8 +20,9 @@ initialDistributionUI <- function(id){
                  br(),
                  br(),
                  dropdownButton(label = "Tuning Parameters",
-                                circle = TRUE,
+                                circle = FALSE,
                                 tooltip = TRUE,
+                                up = TRUE,
                                 icon = icon("toolbox"),
                    wellPanel(strong("Choose the number of voters: "),
                              br(),
@@ -29,7 +30,7 @@ initialDistributionUI <- function(id){
                                          label = NULL,
                                          max = 500,
                                          min = 100, 
-                                         value = 120)), 
+                                         value = 100)), 
                    wellPanel(strong("Choose proportion of inititial votes for each candidate: "),
                              br(),
                              chooseSliderSkin("Simple"),
@@ -44,8 +45,11 @@ initialDistributionUI <- function(id){
                              uiOutput(ns("dist_sum"))))),
     br(),
     br(),
+    column(6, offset = 1,
+             uiOutput(outputId = ns("results_text"))),
     column(8,
            plotlyOutput(outputId = ns("plot"))),
+
     bsPopover(id = ns("n_voter"),                 
               title = "Notice:",
               content =  paste("The number of voters impact how closely the simulation will reflect your desired distribution below"), 
@@ -115,14 +119,35 @@ initialDistribution <- function(input, output, session){
     })
 
   
-  output$rcv_text <- renderText({
+  output$results_text <- renderUI({
     check <- s_results()[[2]] # return the list of polling vectors
+    html_select <- c(A = "#00CC96",
+                     B = "#FFA15A",
+                     C = "#636EFA",
+                     D = "#F28DCD",
+                     E = "#B6E880")
+    
     
     # initial plurality
     initial_plurality <- check[[1]][rank(check[[1]]) == 5] # value
     plural_name <- names(initial_plurality)  # candidate
+    plurality_html <- unname(html_select[names(html_select) %in% plural_name])
     
-    print(paste("In a plurality voting system, candidate ", plural_name, " would win this election with ", unname(initial_plurality)*100, "% of the voting populaations support"))
+    # Ultimate winner
+    final_poll <- length(check)
+    winning_candidate <- names(which.max(rank(check[[final_poll]]))) # extract the name of the candidate polling the highest on the final cycle
+    winner_html <- unname(html_select[names(html_select) %in% winning_candidate])
+    if(winning_candidate == plural_name){
+      div(style = "text-align:center",
+          p(HTML(paste("In a plurality voting system, candidate <span style='color:",plurality_html,"'><b>", plural_name,"</b></span>would wins this election with <span style='color:",plurality_html,"'><b>", round(unname(initial_plurality)*100,2), 
+                       "%</b></span> of the voting populations support."))),
+          p(HTML(paste("Of course, in this simulation, <span style='color:",winner_html,"'><b>", winning_candidate, "</b></span> still wins. Though, everyone's voice has been heard and the process now seems much more fair."))))
+    } else {
+      div(style = "text-align:center",
+          p(HTML(paste("In a plurality voting system, candidate <span style='color:",plurality_html,"'><b>", plural_name,"</b></span>would win this election with <span style='color:",plurality_html,"'><b>", round(unname(initial_plurality)*100,2), 
+                       "%</b></span> of the voting populations support."))),
+          p(HTML(paste("However, using RCV (better known as instant runoff voting), the winner is <span style='color:",winner_html,"'><b>", winning_candidate, "</b></span>"))))
+    }
     
     
   })

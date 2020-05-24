@@ -21,7 +21,7 @@ ui <- fluidPage(
   useShinyjs(),
   extendShinyjs(text = toBottom),
   tags$style(type="text/css", "body {padding-top: 70px;}"),
-  navbarPage("RCV", position = "fixed-top", collapsible = TRUE,
+  navbarPage("IRV", position = "fixed-top", collapsible = TRUE,
     tabPanel("Home",
              tags$iframe(src = "HomePage/rcv_homePage.html",
                          frameBorder = "0",

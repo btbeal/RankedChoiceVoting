@@ -123,7 +123,7 @@ plot_function <- function(data = plot_data(), vote = voters()){
             color = ~initial,
             type = "scatter",
             mode = "markers",
-            height = "1000")  %>% 
+            height = "650")  %>% 
     layout(annotations = a,
            shapes=list(type='line', 
                        x0="A", x1="E", 
@@ -134,7 +134,10 @@ plot_function <- function(data = plot_data(), vote = voters()){
                         categoryorder = "array",
                         categoryarray = c("A", "B", "C", "D", "E")),
            yaxis = list(title = "Total Votes",
-                        range = c(0, vote))) %>% 
+                        range = c(0, 0.75*vote)),
+           paper_bgcolor='transparent',
+           plot_bgcolor = 'transparent') %>% 
+    config(displayModeBar = FALSE, displaylogo = FALSE) %>% 
     animation_opts(2000, easing = "linear", redraw = FALSE)
   
   return(p)
